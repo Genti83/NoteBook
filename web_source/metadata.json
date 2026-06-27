@@ -1,0 +1,6 @@
+{
+  "name": "Bllok Shënimesh",
+  "description": "Një aplikacion i thjeshtë bllok shënimesh me opsione për ruajtjen në TXT dhe PDF.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

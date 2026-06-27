@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system"/>
+        </trust-anchors>
+    </base-config>
+    <domain-config cleartextTrafficPermitted="false">
+        <!-- Firebase -->
+        <domain includeSubdomains="true">firebase.googleapis.com</domain>
+        <domain includeSubdomains="true">firestore.googleapis.com</domain>
+        <domain includeSubdomains="true">identitytoolkit.googleapis.com</domain>
+        <domain includeSubdomains="true">securetoken.googleapis.com</domain>
+        <domain includeSubdomains="true">firebaseapp.com</domain>
+        <!-- Gemini AI -->
+        <domain includeSubdomains="true">generativelanguage.googleapis.com</domain>
+        <!-- Google Auth -->
+        <domain includeSubdomains="true">accounts.google.com</domain>
+        <domain includeSubdomains="true">googleapis.com</domain>
+    </domain-config>
+</network-security-config>

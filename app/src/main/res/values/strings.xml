@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Bllok Shënimesh</string>
+    <string name="gemini_key_title">AI Gemini API Key</string>
+    <string name="gemini_key_message">Vendosni çelësin tuaj nga https://ai.google.dev/gemini-api/docs/api-key\n\nNevojitet vetëm për funksionin AI Chat.</string>
+    <string name="gemini_key_hint">AIza...</string>
+    <string name="save_btn">Ruaj</string>
+    <string name="skip_btn">Kapërcej</string>
+    <string name="permission_title">Leje Mikrofoni</string>
+    <string name="permission_message">Aplikacioni kërkon leje për mikrofonin për funksionin Voice-to-Text.</string>
+    <string name="file_saved">U ruajt: </string>
+    <string name="file_save_error">Gabim gjatë ruajtjes</string>
+</resources>

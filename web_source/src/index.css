@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+body {
+  background-color: #fafafa;
+}
+
+.dark body {
+  background-color: #09090b;
+}
+
+:root {
+  --accent-400: #60a5fa; /* blue-400 */
+  --accent-500: #3b82f6; /* blue-500 */
+  --accent-600: #2563eb; /* blue-600 */
+  --accent-700: #1d4ed8; /* blue-700 */
+  --accent-50: #eff6ff;  /* blue-50 */
+}
+
+@theme {
+  --color-accent-400: var(--accent-400);
+  --color-accent-500: var(--accent-500);
+  --color-accent-600: var(--accent-600);
+  --color-accent-700: var(--accent-700);
+  --color-accent-50: var(--accent-50);
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
+  }
+}
