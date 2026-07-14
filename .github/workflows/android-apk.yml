@@ -39,6 +39,7 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '17'
+          cache: 'gradle'
 
       - name: Add Android platform
         run: npx cap add android
