@@ -1,14 +1,47 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
-import { Notepad } from './components/Notepad';
+import React, { useState, useEffect } from 'react';
+import { authService } from './services/auth';
+import { gistCloud } from './services/gistCloud';
+import { LoginPage } from './components/LoginPage';
+import { CloudConsole } from './components/CloudConsole';
 
 export default function App() {
-  return (
-    <div className="min-h-screen bg-zinc-100 dark:bg-zinc-950 flex flex-col items-center justify-center sm:p-4 selection:bg-blue-500/30">
-      <Notepad />
-    </div>
-  );
+  const [isLoggedIn, setIsLoggedIn] = useState(authService.isLoggedIn());
+  const [user, setUser] = useState(authService.getUser());
+  const [showConsole, setShowConsole] = useState(false);
+
+  useEffect(() => {
+    const currentUser = authService.getUser();
+    if (currentUser) {
+      setIsLoggedIn(true);
+      setUser(currentUser);
+      setShowConsole(true); // Auto-open console on login
+    }
+  }, []);
+
+  const handleLoginSuccess = async () => {
+    const currentUser = authService.getUser();
+    if (currentUser) {
+      setUser(currentUser);
+      setIsLoggedIn(true);
+      setShowConsole(true); // Auto-open console after login
+    }
+  };
+
+  const handleLogout = () => {
+    authService.logout();
+    gistCloud.logout();
+    setIsLoggedIn(false);
+    setUser(null);
+    setShowConsole(false);
+  };
+
+  if (!isLoggedIn) {
+    return <LoginPage onLoginSuccess={handleLoginSuccess} />;
+  }
+
+  if (showConsole) {
+    return <CloudConsole onLogout={handleLogout} />;
+  }
+
+  return <div>Loading...</div>;
 }

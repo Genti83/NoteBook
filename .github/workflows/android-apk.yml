@@ -8,30 +8,29 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js 22
+      - name: Setup Node 22
         uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: 'npm'
 
-      - name: Install dependencies
+      - name: Install
         run: npm ci --prefer-offline
 
-      - name: Create .env file
+      - name: Env
         run: |
           cat > .env << EOF
           VITE_GITHUB_CLIENT_ID=${{ secrets.GH_CLIENT_ID }}
           VITE_GITHUB_CLIENT_SECRET=${{ secrets.GH_CLIENT_SECRET }}
-          VITE_SUPABASE_URL=${{ secrets.SUPABASE_URL }}
-          VITE_SUPABASE_KEY=${{ secrets.SUPABASE_ANON_KEY }}
+          VITE_GEMINI_API_KEY=demo
           EOF
 
-      - name: Build web app
+      - name: Build Web
         run: npm run build
 
       - name: Setup Java 21
@@ -41,10 +40,10 @@ jobs:
           java-version: '21'
           cache: 'gradle'
 
-      - name: Add Android platform
+      - name: Add Android
         run: npx cap add android
 
-      - name: Sync Capacitor
+      - name: Sync
         run: npx cap sync android
 
       - name: Build APK
@@ -53,8 +52,9 @@ jobs:
           chmod +x gradlew
           ./gradlew assembleDebug
 
-      - name: Upload APK
+      - name: Upload
         uses: actions/upload-artifact@v4
         with:
           name: notebook3-app-debug
           path: android/app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 30
