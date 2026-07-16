@@ -10,63 +10,38 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node 22
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: 'npm'
-
-      - name: Install
-        run: npm ci --prefer-offline
-
-      - name: Create .env
-        run: |
+      - run: npm ci --prefer-offline
+      - run: |
           cat > .env << EOF
           VITE_GITHUB_CLIENT_ID=${{ secrets.GH_CLIENT_ID }}
           VITE_GITHUB_CLIENT_SECRET=${{ secrets.GH_CLIENT_SECRET }}
           EOF
-
-      - name: Build Web
-        run: npm run build
-
-      - name: Setup Java 17
-        uses: actions/setup-java@v4
+      - run: npm run build
+      - uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '17'
           cache: 'gradle'
-
-      - name: Add Android
-        run: npx cap add android
-
-      - name: Sync Capacitor
-        run: npx cap sync android
-
-      - name: Downgrade Gradle
-        working-directory: ./android
-        run: |
-          sed -i 's/gradle-8.14.3/gradle-7.6.3/g' gradle/wrapper/gradle-wrapper.properties
-          cat gradle/wrapper/gradle-wrapper.properties
-
-      - name: Configure Gradle
-        run: |
+      - run: npx cap add android
+      - run: npx cap sync android
+      - working-directory: ./android
+        run: sed -i 's/gradle-8.14.3/gradle-7.6.3/g' gradle/wrapper/gradle-wrapper.properties
+      - run: |
           cat > android/gradle.properties << EOF
           org.gradle.jvmargs=-Xmx1024m
           android.useAndroidX=true
           android.enableJetifier=true
           EOF
-
-      - name: Build APK
-        working-directory: ./android
+      - working-directory: ./android
         run: |
           chmod +x gradlew
           ./gradlew assembleDebug
-
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: notebook3-app-debug
           path: android/app/build/outputs/apk/debug/app-debug.apk
