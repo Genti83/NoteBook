@@ -45,22 +45,38 @@ jobs:
       - name: Sync Capacitor
         run: npx cap sync android
 
-      - name: Fix Gradle Properties
+      - name: Configure Gradle
         run: |
+          mkdir -p android
           cat > android/gradle.properties << EOF
-          org.gradle.jvmargs=-Xmx1024m
+          org.gradle.jvmargs=-Xmx1024m -XX:+HeapDumpOnOutOfMemoryError
           android.useAndroidX=true
           android.enableJetifier=true
           android.compileSdkVersion=34
           android.targetSdkVersion=34
           android.minSdkVersion=26
+          android.defaultConfig.minSdkVersion=26
+          android.defaultConfig.targetSdkVersion=34
+          org.gradle.java.home=/usr/local/openjdk-17
+          EOF
+
+      - name: Update build.gradle
+        run: |
+          cat >> android/app/build.gradle << EOF
+          tasks.withType(JavaCompile).configureEach {
+              sourceCompatibility = JavaVersion.VERSION_17
+              targetCompatibility = JavaVersion.VERSION_17
+          }
           EOF
 
       - name: Build APK
         working-directory: ./android
         run: |
           chmod +x gradlew
-          ./gradlew assembleDebug
+          ./gradlew assembleDebug \
+            -Dorg.gradle.java.home=/usr/local/openjdk-17 \
+            -Pandroid.useAndroidX=true \
+            -Pandroid.enableJetifier=true
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
